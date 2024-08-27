@@ -21,6 +21,10 @@ app.use(
 );
 
 // Setting up routes
+const userRouter = require("./routes/userRoutes");
+app.use("/api/users", userRouter);
+
+// Setting up routes
 app.get("/", (req, res) => {
   res.send("Server started successfully...");
 });
