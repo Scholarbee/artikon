@@ -338,71 +338,39 @@ exports.resetPassword = asyncHandler(async (req, res) => {
   });
 });
 
+
 /**
- * Block user
+ * Register as an agent
  */
-exports.blockUser = asyncHandler(async (req, res) => {
-  let { id } = req.params;
-  const user = await User.findByIdAndUpdate(
-    id,
-    { isActive: false },
-    { new: true }
-  );
+exports.registerAgent = asyncHandler(async (req, res) => {
+  const { brandName, brandLocation, brandContact } = req.body;
 
-  // Email
-  const message = `
-      <h2>Hello, ${user.name}</h2>
-      <p>Please your account has been suspended</p>  
-      <p>If you think this is wrong, please file \n a report to the system administrators via the website</p>
-
-      <a href="https://artikon-alx-2qcy.onrender.com" clicktracking=off>Click here to place a report</a>
-
-      <p>Regards...</p>
-      <p>Artikon Team</p>
-    `;
-  const subject = "Suspention Of Account";
-  const send_to = user.email;
-  const sent_from = process.env.EMAIL_USER;
-
-  try {
-    await sendEmail(subject, message, send_to, sent_from);
-    res.status(200).json({ success: true, message: "Email Sent" });
-  } catch (error) {
-    res.status(500);
-    throw new Error("Email not sent, please try again");
+  if (!brandName || !brandLocation || !brandContact) {
+    res.status(400);
+    throw new Error("All fields are required.");
   }
-});
 
-/**
- * Unblock user
- */
-exports.unblockUser = asyncHandler(async (req, res) => {
-  let { id } = req.params;
+  const brandExist = await User.findOne({ "brand.brandName": brandName });
+  if (brandExist) {
+    res.status(400);
+    throw new Error(
+      "Brand name has been registered already. Please choose another."
+    );
+  }
+
   const user = await User.findByIdAndUpdate(
-    id,
-    { isActive: true },
+    req.user._id,
+    {
+      brand: { brandName, brandLocation, brandContact },
+      role: "agent",
+    },
     { new: true }
   );
-  // Email
-  const message = `
-      <h2>Hello, ${user.name}</h2>
-      <p>Please your account has been reactivated</p>  
-      <p>Visit the official website for more info.</p>
 
-      <a href="https://artikon-alx-2qcy.onrender.com" clicktracking=off>Click here to place a report</a>
-
-      <p>Regards...</p>
-      <p>Artikon Team</p>
-    `;
-  const subject = "Suspention Of Account";
-  const send_to = user.email;
-  const sent_from = process.env.EMAIL_USER;
-
-  try {
-    await sendEmail(subject, message, send_to, sent_from);
-    res.status(200).json({ success: true, message: "Email Sent" });
-  } catch (error) {
+  if (user) {
+    res.status(200).json({ success: true, user });
+  } else {
     res.status(500);
-    throw new Error("Email not sent, please try again");
+    throw new Error("Internal server error");
   }
 });

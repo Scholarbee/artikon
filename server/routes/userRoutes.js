@@ -16,4 +16,12 @@ router.post("/login", login);
 router.get("/logout", logout);
 router.get("/login-status", loginStatus);
 
+
+router.post("/change-password", userInfo, changePassword);
+router.post("/forgot-password", forgotPassword);
+router.put("/reset-password/:resetToken", resetPassword);
+
+router.put("/register-agent", userInfo, registerAgent);
+
+
 module.exports = router;
