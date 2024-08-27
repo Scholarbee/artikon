@@ -1,6 +1,7 @@
+// Importing necessary components from Material UI
 import { Box } from "@mui/material";
-import React from "react";
 
+// Desc: Footer component for the ArtiKon Web Application
 const Footer = () => {
   return (
     <>

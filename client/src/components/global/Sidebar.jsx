@@ -1,3 +1,4 @@
+// Importing necessary dependencies from React, Material UI, React Router, and Redux
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -27,22 +28,25 @@ import {
 } from "../../redux/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 
+// Sidebar component definition
 export default function Sidebar() {
-  const dispatch = useDispatch();
-  // const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
-  const userInfo = useSelector(selectUser);
-  const sidebarOpen = useSelector(selectSidebarIsOpen);
+  const dispatch = useDispatch(); // Redux dispatch hook
+  const navigate = useNavigate(); // React Router navigation hook
+  const userInfo = useSelector(selectUser); // Redux selector for user info
+  const sidebarOpen = useSelector(selectSidebarIsOpen); // Redux selector for sidebar state
 
+  // Styling for item text based on sidebar state
   const itemTextStyle = {
     opacity: sidebarOpen ? 1 : 0,
     color: sidebarOpen ? "#e0e0e0" : "#b0b0b0", // Slightly lighter gray for closed state
   };
 
+  // Render the Sidebar component
   return (
     <Box sx={{ display: "flex" }}>
-      <CssBaseline />
+      <CssBaseline /> {/* Baseline CSS resets for Material UI */}
 
+      {/* Drawer component for the sidebar */}
       <Drawer variant="permanent" open={sidebarOpen}>
         <DrawerHeader sx={{ backgroundColor: "rgb(85, 0, 70)" }}>
           {" "}
@@ -59,8 +63,7 @@ export default function Sidebar() {
         {/* Light gray divider */}
         <List sx={{ backgroundColor: "rgb(85, 0, 70)", flexGrow: 1 }}>
           {" "}
-          {/* {userInfo.role === "admin" &&
-          } */}
+          {/* List for menu items */}
           {userInfo.role === "admin" &&
             adminMenuItems.map((item) => (
               <ListItem
@@ -162,8 +165,10 @@ export default function Sidebar() {
   );
 }
 
+// Drawer width constant
 const drawerWidth = 230;
 
+// Styles for the drawer when opened
 const openedMixin = (theme) => ({
   width: drawerWidth,
   transition: theme.transitions.create("width", {
@@ -173,6 +178,7 @@ const openedMixin = (theme) => ({
   overflowX: "hidden",
 });
 
+// Styles for the drawer when closed
 const closedMixin = (theme) => ({
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
@@ -185,6 +191,7 @@ const closedMixin = (theme) => ({
   },
 });
 
+// Drawer header styles
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -193,6 +200,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 
+// Drawer component with conditional styles based on open state
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
@@ -216,16 +224,18 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
+// Menu items for general users
 const menuItems = [
   {
     text: "My Cart",
     icon: <ShoppingCartIcon />,
     path: "/post/orders-and-books",
   },
-
+  
   { text: "Report Bug", icon: <ReportIcon />, path: "/report-bug" },
 ];
 
+// Menu items for admin users
 const adminMenuItems = [
   {
     text: "Manage Users",
@@ -235,6 +245,7 @@ const adminMenuItems = [
   { text: "Manage Posts", icon: <IsoIcon />, path: "/admin/manage-posts" },
 ];
 
+// Menu items for agents
 const agentMenuItems = [
   { text: "My Post", icon: <InboxIcon />, path: "/user/posts" },
   {

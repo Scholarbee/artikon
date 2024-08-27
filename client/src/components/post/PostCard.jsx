@@ -1,3 +1,4 @@
+// Importing necessary dependencies from Material UI, React Router, Redux, and other libraries
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
@@ -18,8 +19,8 @@ import { toast } from "react-toastify";
 import { addLke, removeLike } from "../../redux/posts/postActions";
 import { selectIsLoggedIn, selectUser } from "../../redux/auth/authSlice";
 import { useState } from "react";
-//import image from '../images/blog.jpg'
 
+// PostCard component definition
 const PostCard = ({
   id,
   title,
@@ -32,44 +33,37 @@ const PostCard = ({
   showPosts,
   likesId,
 }) => {
-  const userInfo = useSelector(selectUser);
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
+  const userInfo = useSelector(selectUser); // Retrieve user information from Redux store
+  const navigate = useNavigate(); // Navigation function for routing
+  const [isLoading, setIsLoading] = useState(false); // Loading state for like actions
 
-  //add like
+  // Function to handle adding a like
   const handleAddLike = async () => {
     try {
-      // setIsLoading(true);
       const data = await addLke(id);
       if (data.success == true) {
-        showPosts();
-        // setIsLoading(false);
+        showPosts(); // Refresh posts after successful like
       }
-      // setIsLoading(false);
     } catch (error) {
-      toast.error(error.response.data.error);
-      // setIsLoading(false);
+      toast.error(error.response.data.error); // Display error message on failure
     }
   };
 
-  //remove like
+  // Function to handle removing a like
   const handleRemoveLike = async () => {
     try {
-      // setIsLoading(true);
       const data = await removeLike(id);
       if (data.success == true) {
-        showPosts();
-        // setIsLoading(false);
+        showPosts(); // Refresh posts after successful unlike
       }
-      // setIsLoading(false);
     } catch (error) {
-      toast.error(error.response.data.error);
-      // setIsLoading(false);
+      toast.error(error.response.data.error); // Display error message on failure
     }
   };
 
   return (
     <Card sx={{ backgroundColor: "rgb(38, 38, 38)", color: "white" }}>
+      {/* Card header with avatar, title, and subheader */}
       <CardHeader
         sx={{ color: "white" }}
         avatar={
@@ -89,13 +83,13 @@ const PostCard = ({
           </Typography>
         }
       />
-      {/* <Link to={`/post/${id}`}> */}
+      
+      {/* Card media displaying the image */}
       <CardMedia component="img" height="240" image={image} alt="Artikon" />
-      {/* </Link> */}
+      
+      {/* Card content displaying the description */}
       <CardContent>
         <Typography variant="body2" color="smokewhite">
-          {/* {content} */}
-
           <Box
             component="span"
             dangerouslySetInnerHTML={{
@@ -104,6 +98,8 @@ const PostCard = ({
           ></Box>
         </Typography>
       </CardContent>
+      
+      {/* Card actions with like, info, and comment buttons */}
       <CardActions>
         <Box
           sx={{
@@ -113,6 +109,7 @@ const PostCard = ({
           }}
         >
           <Box>
+            {/* Display either filled or outlined favorite icon based on whether the user has liked the post */}
             {likesId.includes(userInfo && userInfo._id) ? (
               <IconButton
                 disabled={isLoading}
@@ -133,7 +130,6 @@ const PostCard = ({
             {likes} Like(s)
           </Box>
           <Box>
-            {/* {comments} */}
             <IconButton
               aria-label="info"
               onClick={() => navigate("/post/info/" + id)}
@@ -145,7 +141,6 @@ const PostCard = ({
             {comments}
             <IconButton
               aria-label="comment"
-              // color={teal}
               onClick={() => navigate("/post/comments/session/" + id)}
             >
               <CommentIcon sx={{ color: "#00695c" }} />
