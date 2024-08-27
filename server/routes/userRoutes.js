@@ -8,9 +8,7 @@ const upload = Multer({
   storage,
 });
 
-router.get("/", userAuth, getUsers);
-router.post("/add-user", upload.single("my_file"), addtUser);
+router.post("/register", upload.single("my_file"), addtUser);
 router.get("/user", userAuth, getUser);
-router.delete("/delete-user/:id", deltUser);
 
 module.exports = router;

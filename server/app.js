@@ -22,7 +22,9 @@ app.use(
 
 // Setting up routes
 const userRouter = require("./routes/userRoutes");
+const adminRouter = require("./routes/adminRoutes");
 app.use("/api/users", userRouter);
+app.use("/api/admin", adminRouter);
 
 // Setting up routes
 app.get("/", (req, res) => {
