@@ -119,3 +119,92 @@ exports.getUser = asyncHandler(async (req, res) => {
 // exports.edittUser = asyncHandler(async (req, res) => {
 //   const user = await User.findByIdAndUpdate(req.user._id);
 // });
+
+/**
+ * Login user
+ * This function login users by generating token after email and password authenticaton
+ */
+exports.login = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    res.status(400);
+    throw new Error("Email and password are required.");
+  }
+
+  // Email authentication
+  const user = await User.findOne({ email: email });
+  if (!user) {
+    res.status(400);
+    throw new Error("User not found");
+  }
+
+  // Password authentication
+  const verified = await bcrypt.compare(password, user.password);
+  if (!verified) {
+    res.status(400);
+    throw new Error("Wrong Email or Password.");
+  }
+
+  //   Generate Token
+  const token = generateToken(user._id);
+
+  if (verified) {
+    // Send HTTP-only cookie
+    res.cookie("artikonToken", token, {
+      path: "/",
+      httpOnly: true,
+      expires: new Date(Date.now() + 1000 * 86400), // 1 day
+      sameSite: "none",
+      secure: true,
+    });
+  }
+  if (user && verified) {
+    const { _id, name, email, brand, photo, city, phone, role } = user;
+    res.status(200).json({
+      _id,
+      name,
+      email,
+      city,
+      brand,
+      phone,
+      role,
+      photo: photo.url,
+      token,
+    });
+  } else {
+    res.status(400);
+    throw new Error("Invalid email or password");
+  }
+});
+
+/**
+ * Logout User
+ * This function logout users by expiring the user token
+ */
+exports.logout = asyncHandler(async (req, res) => {
+  res.cookie("artikonToken", "", {
+    path: "/",
+    httpOnly: true,
+    expires: new Date(0),
+    sameSite: "none",
+    secure: true,
+  });
+  return res.status(200).json({ success: true });
+});
+
+/**
+ * Check login status
+ * This function checks authenticate users by token
+ */
+exports.loginStatus = asyncHandler(async (req, res) => {
+  const token = req.cookies.artikonToken;
+  if (!token) {
+    return res.json(false);
+  }
+  // Verify Token
+  const verified = jwt.verify(token, process.env.JWT_SECRET);
+  if (verified) {
+    return res.json(true);
+  }
+  return res.json(false);
+});
