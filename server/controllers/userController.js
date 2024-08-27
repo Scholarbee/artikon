@@ -4,12 +4,23 @@ const bcrypt = require("bcryptjs");
 const Token = require("../models/tokenModel");
 const User = require("../models/userModel");
 
-// Generate Token
+/**
+ * This function generate and return a token that expires in 24hrs for authentication
+ * @param {*} id id of the user
+ * @returns token
+ */
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "1d" });
 };
 
-// Sign Up
+/**
+ * addtUser function contain the logics to add new user to the database
+ *
+ * It logs the user in after a successfully registration
+ *
+ * It also return user info as response to the client which can be use
+ * for authentication and authorization processes.
+ */
 exports.addtUser = asyncHandler(async (req, res) => {
   const { name, email, city, phone, password } = req.body;
 
@@ -71,6 +82,29 @@ exports.addtUser = asyncHandler(async (req, res) => {
       role,
       photo: photo.url,
       token,
+    });
+  } else {
+    res.status(400);
+    throw new Error("Invalid user data");
+  }
+});
+
+/**
+ * getUser func handle the logic to find a given user by an id
+ */
+exports.getUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  if (user) {
+    const { _id, name, email, brand, city, phone, photo, role } = user;
+    res.status(200).json({
+      _id,
+      name,
+      email,
+      city,
+      brand,
+      phone,
+      role,
+      photo: photo.url,
     });
   } else {
     res.status(400);
