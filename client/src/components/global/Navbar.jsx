@@ -1,4 +1,4 @@
-// import * as React from "react";
+// Importing necessary dependencies from React, Material UI, React Router, and Redux
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -25,33 +25,37 @@ import { logoutUser, registerAgent } from "../../redux/auth/authActions";
 import { Backdrop, Fade, Modal, Stack, TextField } from "@mui/material";
 import { useState } from "react";
 
-// const pages = ["Home", "Dashboard"];
-
+// Navbar component definition
 function Navbar() {
+  // Redux dispatch and navigation hooks
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // Redux state selectors called to get the user login status and user information
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const userInfo = useSelector(selectUser);
+  
+  // State hooks for managing various UI interactions instialized with default values
+  const [anchorElNav, setAnchorElNav] = useState(null); // For navigation menu
+  const [anchorElUser, setAnchorElUser] = useState(null); // For user menu
+  const [open, setOpen] = useState(false); // For modal visibility
+  const [isLoading, setIsLoading] = useState(false); // For loading state during async actions
+  const [brandName, setBrandName] = useState(""); // For storing brand name input
+  const [brandLocation, setBrandLocation] = useState(""); // For storing brand location input
+  const [brandContact, setBrandContact] = useState(""); // For storing brand contact input
 
-  const [anchorElNav, setAnchorElNav] = useState(null);
-  const [anchorElUser, setAnchorElUser] = useState(null);
-  const [open, setOpen] = useState(false);
-  // const [loading, setLoading] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [brandName, setBrandName] = useState("");
-  const [brandLocation, setBrandLocation] = useState("");
-  const [brandContact, setBrandContact] = useState("");
-
+  // Handlers for opening and closing menus
   const handleOpenNavMenu = (event) => setAnchorElNav(event.currentTarget);
   const handleOpenUserMenu = (event) => setAnchorElUser(event.currentTarget);
   const handleCloseNavMenu = () => setAnchorElNav(null);
   const handleCloseUserMenu = () => setAnchorElUser(null);
-
+  
+  // Function to log out the user
   const logOutUser = async () => {
     await logoutUser();
-    dispatch(SET_LOGIN(false));
+    dispatch(SET_LOGIN(false)); // Reset login state
     dispatch(
-      SET_USER({
+      SET_USER({ // Clear user information
         _id: "",
         name: "",
         email: "",
@@ -62,10 +66,11 @@ function Navbar() {
       })
     );
     dispatch(SET_BRAND({ brandName: "", brandLocation: "", brandContact: "" }));
-    dispatch(SET_TOKEN(""));
-    navigate("/");
+    dispatch(SET_TOKEN("")); // Clear token
+    navigate("/"); // Redirect to homepage
   };
 
+  // Function to register the user as an agent
   const handleRegisterAgent = async () => {
     const brandInfo = {
       brandName,
@@ -74,26 +79,29 @@ function Navbar() {
     };
     try {
       setIsLoading(true);
-      const data = await registerAgent(brandInfo);
+      const data = await registerAgent(brandInfo);// Register agent
       console.log(data);
-      dispatch(SET_BRAND(data.user.brand));
-      dispatch(SET_USER(data.user));
-      setOpen(false);
-      navigate("/user/dashboard");
+      dispatch(SET_BRAND(data.user.brand)); // Update brand information
+      dispatch(SET_USER(data.user)); // Update user information
+      setOpen(false); // Close modal
+      navigate("/user/dashboard"); // Redirect to dashboard
     } catch (error) {
       console.log(error.response.message);
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Reset loading state
     }
   };
 
+  // Navbar component JSX structure
   return (
     <AppBar position="static" sx={{ backgroundColor: "rgb(38, 38, 38)" }}>
       <Container>
         <Toolbar disableGutters>
+          {/* Logo Button - Redirects to home */}
           <Button onClick={() => navigate("/")}>
             <Avatar alt="logo" src="/logo.png" sx={{ width: 70, height: 70 }} />
           </Button>
+          {/* Brand name - Visible on medium and larger screens */}
           <Typography
             variant="h6"
             noWrap
@@ -112,6 +120,7 @@ function Navbar() {
             ArtiKon
           </Typography>
 
+          {/* Navigation menu - Visible on small screens */}
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -133,6 +142,7 @@ function Navbar() {
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: "block", md: "none" } }}
             >
+              {/* Navigation links */}
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">
                   <Link
@@ -166,6 +176,7 @@ function Navbar() {
                   </Typography>
                 </MenuItem>
               )}
+              {/* Option to become an agent if the user is logged in */}
               {userInfo.role === "user" && (
                 <MenuItem
                   onClick={() => {
@@ -186,6 +197,7 @@ function Navbar() {
             </Menu>
           </Box>
 
+           {/* Brand name - Visible on mobile screens */}
           <Typography
             variant="h5"
             noWrap
@@ -204,6 +216,7 @@ function Navbar() {
           >
             ArtiKon
           </Typography>
+          {/* Desktop view navigation buttons */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Button
               onClick={() => {
@@ -235,6 +248,7 @@ function Navbar() {
                 Login
               </Button>
             )}
+            {/* Option to become an agent if the user is logged in */}
             {userInfo.role === "user" && (
               <Button
                 onClick={() => {
@@ -248,6 +262,7 @@ function Navbar() {
             )}
           </Box>
 
+          {/* User settings menu */}
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -264,6 +279,8 @@ function Navbar() {
               onClose={handleCloseUserMenu}
               sx={{ mt: "45px" }}
             >
+
+              {/* User account options */}
               <MenuItem onClick={handleCloseUserMenu}>
                 <Typography textAlign="center">
                   <Link to="/profile" style={{ textDecoration: "none" }}>
@@ -301,6 +318,7 @@ function Navbar() {
         </Toolbar>
       </Container>
       <Box>
+        {/* Modal for becoming an agent */}
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
@@ -314,6 +332,8 @@ function Navbar() {
             },
           }}
         >
+
+          {/* Modal content */}
           <Fade in={open}>
             <Box sx={style}>
               <Typography
@@ -394,8 +414,9 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default Navbar; // Exporting Navbar component
 
+// Modal style object
 const style = {
   position: "absolute",
   top: "50%",
