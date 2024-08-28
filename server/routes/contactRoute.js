@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const userInfo = require("../middleWare/authMiddleware");
 const { contactUs } = require("../controllers/contactController");
+const userAuth = require("../middleWare/authMiddleware");
 
-router.post("/report", userInfo, contactUs);
+router.post("/report", userAuth, contactUs);
 
 module.exports = router;

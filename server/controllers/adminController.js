@@ -4,7 +4,7 @@ const User = require("../models/userModel");
 /**
  * Get all users
  */
-exports.getUsers = asyncHandler(async (req, res) => {
+exports.getUsers = expressAsyncHandler(async (req, res) => {
   const users = await User.find({});
   res.status(200).json({ success: true, users });
 });
@@ -12,7 +12,7 @@ exports.getUsers = asyncHandler(async (req, res) => {
 /**
  * Block user
  */
-exports.blockUser = asyncHandler(async (req, res) => {
+exports.blockUser = expressAsyncHandler(async (req, res) => {
   let { id } = req.params;
   const user = await User.findByIdAndUpdate(
     id,
@@ -47,7 +47,7 @@ exports.blockUser = asyncHandler(async (req, res) => {
 /**
  * Unblock user
  */
-exports.unblockUser = asyncHandler(async (req, res) => {
+exports.unblockUser = expressAsyncHandler(async (req, res) => {
   let { id } = req.params;
   const user = await User.findByIdAndUpdate(
     id,
@@ -82,7 +82,7 @@ exports.unblockUser = asyncHandler(async (req, res) => {
  * Delete user
  * This func find user by id and remove/delete it in the database
  */
-exports.deltUser = asyncHandler(async (req, res) => {
+exports.deltUser = expressAsyncHandler(async (req, res) => {
   let { id } = req.params;
   const result = await User.findByIdAndDelete(id);
   if (result) {
