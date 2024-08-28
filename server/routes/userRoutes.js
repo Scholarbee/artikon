@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const userAuth = require("../middleWare/authMiddleware");
-const { addtUser, getUser, getUsers, deltUser, login, logout } = require("../controllers/userController");
+const { addtUser, getUser, login, logout, loginStatus } = require("../controllers/userController");
 const Multer = require("multer");
 
 const storage = new Multer.memoryStorage();
