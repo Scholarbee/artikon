@@ -1,175 +1,95 @@
+// Importing necessary components and icons from Material-UI
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+
 import {
   Avatar,
-  Box,
   Button,
   Card,
   CardContent,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import React, { useState } from "react";
-import SendIcon from "@mui/icons-material/Send";
-import Stack from "@mui/material/Stack";
-import { teal } from "@mui/material/colors";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { forgotPassword, validateEmail } from "../../redux/auth/authActions";
-import { toast } from "react-toastify";
-import Loader from "../../components/global/Loader";
+import React from "react";
 
-function ForgotPassword() {
-  const navigate = useNavigate();
-  // const despatch = useDispatch();
-  const [email, setEmail] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+function ChangePassword() {
+  // State to manage the visibility of the password
+  const [showPassword, setShowPassword] = React.useState(false);
 
-  const sendMail = async (e) => {
-    e.preventDefault();
+  // Function to toggle the visibility of the password
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-    if (!validateEmail(email)) {
-      toast.error("Invalid email");
-    } else {
-      setIsLoading(true);
-      console.log(email);
-      const userData = {
-        email,
-      };
-      const mailSent = await forgotPassword(userData);
-      if (mailSent) {
-        toast.success("Mail sent succesfully");
-        navigate("/login");
-      }
-      setIsLoading(false);
-    }
+  // Prevent default behavior when the mouse is down on the password input field
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
   };
 
   return (
     <>
-      {/* {isLoading && <Loader />} */}
-      <div
-        style={{
-          // backgroundColor: "teal",
-          height: "100vh",
-          // marginTop:"5vh",
-          // margin: "",
-          // display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          padding: "10px",
-          // margin:"auto"
-        }}
-      >
-        <Card
+      {/* Card container to hold the change password form */}
+      <Card sx={{ maxWidth: 500, height: 420 }}>
+        <CardContent
           sx={{
-            maxWidth: 500,
-            // height: 350,
-            margin: "auto",
-            // backgroundColor: "GrayText",
-            marginTop: "15vh",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            p: 5,
           }}
         >
-          {isLoading && <Loader />}
-          <CardContent
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-
-              p: 5,
-            }}
+          {/* Avatar with a lock icon, representing password change */}
+          <Avatar sx={{ m: 1, bgcolor: "teal" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          {/* Title of the card */}
+          <Typography
+            gutterBottom
+            marginBottom={2}
+            alignContent={"center"}
+            variant="h6"
+            component="div"
           >
-            <Avatar sx={{ m: 1, bgcolor: "rgb(85, 0, 70)" }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography
-              gutterBottom
-              marginBottom={2}
-              alignContent={"center"}
-              variant="h6"
-              component="div"
+            Change Password
+          </Typography>
+          {/* Stack container for form fields */}
+          <Stack spacing={3} width="100%">
+            {/* Old password input field */}
+            <TextField
+              id="oldpassword"
+              label="Old Password"
+              type="password"
+              autoComplete="current-password"
+              variant="standard"
+            />
+            {/* New password input field */}
+            <TextField
+              id="newpassword"
+              label="New Password"
+              type="password"
+              autoComplete="new-password"
+              variant="standard"
+            />
+            {/* Confirm password input field */}
+            <TextField
+              id="confirmPassword"
+              label="Confirm Password"
+              type="password"
+              autoComplete="confirm-password"
+              variant="standard"
+            />
+            {/* Button to submit the password change */}
+            <Button
+              variant="contained"
+              sx={{ backgroundColor: "rgb(85, 0, 70)" }}
             >
               Change Password
-            </Typography>
-            <Stack spacing={3} width={100 + "%"}>
-              <TextField
-                id="email"
-                label="Email"
-                type="email"
-                autoComplete="email"
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
-                variant="standard"
-              />
-              <Button
-                onClick={sendMail}
-                variant="contained"
-                endIcon={<SendIcon />}
-                sx={{ backgroundColor: "rgb(85, 0, 70)" }}
-              >
-                Send reset link
-              </Button>
-            </Stack>
-          </CardContent>
-        </Card>
-      </div>
-      {/* <Box
-        sx={{
-          // margin:"auto",
-          // marginTop: "auto",
-          // marginBottom: "auto",
-          // marginRight: "auto",
-          // marginLeft: "auto",
-          // backgroundColor: "teal",
-          textAlign:"center",
-          height:"100vh",
-          // display: "flex",
-          // flexDirection: "column",
-          // justifyContent: "center",
-          // alignItems: "center",
-        }}
-      >
-        <Card sx={{ maxWidth: 500, height: 420, display: "block" }}>
-          <CardContent
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              p: 5,
-            }}
-          >
-            <Avatar sx={{ m: 1, bgcolor: "teal" }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography
-              gutterBottom
-              marginBottom={2}
-              alignContent={"center"}
-              variant="h6"
-              component="div"
-            >
-              Change Password
-            </Typography>
-            <Stack spacing={3} width={100 + "%"}>
-              <TextField
-                id="email"
-                label="Email"
-                type="email"
-                autoComplete="email"
-                variant="standard"
-              />
-              <Button variant="contained" endIcon={<SendIcon />}>
-                Send reset link
-              </Button>
-            </Stack>
-          </CardContent>
-        </Card>
-      </Box> */}
+            </Button>
+          </Stack>
+        </CardContent>
+      </Card>
     </>
   );
 }
 
-export default ForgotPassword;
+export default ChangePassword; // Exporting the component for use in other parts of the application

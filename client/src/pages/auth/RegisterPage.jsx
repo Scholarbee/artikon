@@ -1,66 +1,44 @@
+// Import necessary dependencies from React, Redux, React Router, and other utilities
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../../styles/Register.scss";
-import { SET_LOGIN, SET_NAME } from "../../redux/auth/authSlice";
+import "../../styles/Register.scss"; // Importing custom styles for the register page
+import { SET_LOGIN, SET_NAME } from "../../redux/auth/authSlice"; // Importing actions from Redux slice
 import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
-import { registerUser, validateEmail } from "../../redux/auth/authActions";
+import { toast } from "react-toastify"; // Importing toast notifications
+import { registerUser, validateEmail } from "../../redux/auth/authActions"; // Importing authentication functions
 
 const RegisterPage = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const dispatch = useDispatch(); // Initialize Redux dispatch function
+  const navigate = useNavigate(); // Hook for navigation
 
+  // State variables to manage loading state and form data
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     city: "",
-    // brand: "",
     password: "",
     confirmPassword: "",
     my_file: null,
   });
 
+  // Handle input changes and update form data state
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
-      [name]: name === "my_file" ? files[0] : value,
+      [name]: name === "my_file" ? files[0] : value, // Set file if input is file type
     });
   };
 
-  const [passwordMatch, setPasswordMatch] = useState(true);
+  const [passwordMatch, setPasswordMatch] = useState(true); // State to check if passwords match
 
-  
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     const register_form = new FormData();
-
-  //     for (var key in formData) {
-  //       register_form.append(key, formData[key]);
-  //     }
-
-  //     const response = await fetch("http://localhost:3001/auth/register", {
-  //       method: "POST",
-  //       body: register_form,
-  //     });
-
-  //     if (response.ok) {
-  //       navigate("/login");
-  //     }
-  //   } catch (err) {
-  //     console.log("Registration failed", err.message);
-  //   }
-  // };
-
+  // Function to handle form submission for registration
   const handleSignUp = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission
 
+    // Validate form inputs
     if (!formData.name || !formData.email || !formData.password) {
       return toast.error("All fields are required");
     }
@@ -74,7 +52,9 @@ const RegisterPage = () => {
       return toast.error("Passwords do not match");
     }
 
-    setIsLoading(true);
+    setIsLoading(true); // Set loading state to true
+
+    // Create FormData object to send data including file upload
     const formData2 = new FormData();
     formData2.append("name", formData.name);
     formData2.append("phone", formData.phone);
@@ -82,23 +62,22 @@ const RegisterPage = () => {
     formData2.append("password", formData.password);
     formData2.append("city", formData.city);
     formData2.append("my_file", formData.my_file);
-    try {
-      const data = await registerUser(formData2);
-      console.log(data);
-      dispatch(SET_LOGIN(true));
-      dispatch(SET_NAME(data.name));
-      // navigate("/dashboard");
-      setIsLoading(false);
-      toast.success("Success");
 
-      navigate("/user/dashboard");
+    try {
+      const data = await registerUser(formData2); // Attempt to register user
+      console.log(data); // Log response data for debugging
+      dispatch(SET_LOGIN(true)); // Dispatch login action to Redux store
+      dispatch(SET_NAME(data.name)); // Set user name in Redux store
+      toast.success("Success"); // Show success message
+      navigate("/user/dashboard"); // Navigate to user dashboard after successful registration
+      setIsLoading(false); // Set loading state to false
     } catch (error) {
-      setIsLoading(false);
+      setIsLoading(false); // Handle error and set loading state to false
     }
   };
 
   return (
-    <div className="register">
+    <div className="register"> {/* Container for register page */}
       <div
         style={{
           width: "100%",
@@ -108,9 +87,9 @@ const RegisterPage = () => {
           alignItems: "center",
         }}
       >
-        <div className="register_content">
-          <form className="register_content_form" onSubmit={handleSignUp}>
-            {/* <img style={{height:150, width:150}} src="/logo.png" alt="" /> */}
+        <div className="register_content"> {/* Container for register content */}
+          <form className="register_content_form" onSubmit={handleSignUp}> {/* Registration form */}
+            {/* <img style={{height:150, width:150}} src="/logo.png" alt="" /> */} {/* Optional logo image */}
             <input
               placeholder="Full Name"
               name="name"
@@ -118,13 +97,6 @@ const RegisterPage = () => {
               onChange={handleChange}
               required
             />
-            {/* <input
-              placeholder="Brand Name"
-              name="brand"
-              value={formData.brand}
-              onChange={handleChange}
-              required
-            /> */}
             <input
               placeholder="City"
               name="city"
@@ -166,10 +138,12 @@ const RegisterPage = () => {
               required
             />
 
+            {/* Show warning if passwords do not match */}
             {!passwordMatch && (
               <p style={{ color: "red" }}>Passwords are not matched!</p>
             )}
 
+            {/* Hidden file input for profile photo upload */}
             <input
               id="image"
               type="file"
@@ -179,11 +153,12 @@ const RegisterPage = () => {
               onChange={handleChange}
               required
             />
-            <label htmlFor="image">
+            <label htmlFor="image"> {/* Label to trigger file input */}
               <img src="/addImage.png" alt="" />
               <p>Upload Your Photo</p>
             </label>
 
+            {/* Preview uploaded image */}
             {formData.my_file && (
               <img
                 src={URL.createObjectURL(formData.my_file)}
@@ -191,12 +166,11 @@ const RegisterPage = () => {
                 style={{ maxWidth: "100px", borderRadius: "4px" }}
               />
             )}
-            <button type="submit" disabled={!passwordMatch}>
+            <button type="submit" disabled={!passwordMatch}> {/* Submit button */}
               REGISTER
             </button>
           </form>
-          <Link to={"/login"}>Already have an account? Log In Here</Link>
-          {/* <a href="/login">Already have an account? Log In Here</a> */}
+          <Link to={"/login"}>Already have an account? Log In Here</Link> {/* Link to login page */}
         </div>
       </div>
     </div>

@@ -21,24 +21,31 @@ import FilterIcon from "@mui/icons-material/FilterAltOutlined";
 import Carousel from "react-material-ui-carousel";
 import axios from "axios";
 import { BACKEND_URL } from "../../redux/auth/authActions";
-// import "../../styles/Listings.scss";
+// Importing custom styles for the component
 import "../../styles/Categories.scss";
 
 function Home() {
+  // State to hold posts data
   const [posts, setPosts] = useState([]);
+  // State to hold all posts data
   const [allPosts, setAllPosts] = useState([]);
+  // State to handle loading status
   const [loading, setLoading] = useState(false);
+  // Theme hook for responsive design
   const theme = useTheme();
+  // Media query to detect small screens
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  // State to hold categories data
   const [categories, setCategories] = useState([]);
+  // State to hold the selected category
   const [selectedCategory, setSelectedCategory] = useState("all");
 
+  // Function to fetch and set all posts
   const getAllPosts = async () => {
     setLoading(true);
     try {
       const { data } = await getPosts();
       console.log(data);
-
       setPosts(data.posts);
       setAllPosts(data.posts);
       setLoading(false);
@@ -47,6 +54,7 @@ function Home() {
     }
   };
 
+  // Function to fetch and set posts
   const showPosts = async () => {
     try {
       const { data } = await getPosts();
@@ -58,6 +66,7 @@ function Home() {
     }
   };
 
+  // Fetch categories from backend on component mount
   useEffect(() => {
     axios.get(`${BACKEND_URL}/api/categories`).then(({ data }) => {
       setCategories(data.categories);
@@ -65,26 +74,12 @@ function Home() {
     });
   }, []);
 
+  // Fetch posts on component mount
   useEffect(() => {
     getAllPosts();
   }, []);
 
-  // const handleSearch = (e) => {
-  //   const query = e.target.value.toLowerCase();
-  //   setSearchQuery(query);
-
-  //   if (query) {
-  //     const results = allPosts.filter(
-  //       (post) =>
-  //         post.category.toLowerCase().includes(query) ||
-  //         post.surname.toLowerCase().includes(query)
-  //     );
-  //     setPosts(results);
-  //   } else {
-  //     setPosts(allPosts);
-  //   }
-  // };
-
+  // Function to filter posts based on selected category
   const handleQuickSearch = (id) => {
     setSelectedCategory(id);
 
@@ -99,9 +94,11 @@ function Home() {
   return (
     <>
       <Box sx={{ bgcolor: "#fafafa", minHeight: "100vh" }}>
+        {/* Navbar component */}
         <Navbar />
 
         <Container sx={{ pt: 2, pb: 5, minHeight: "83vh" }}>
+          {/* Carousel for images */}
           <Box sx={{ maxWidth: "100%", flexGrow: 1, marginBottom: 4 }}>
             <Carousel
               autoPlay={true}
@@ -131,6 +128,7 @@ function Home() {
             </Carousel>
           </Box>
 
+          {/* Category section */}
           <Box>
             <div className="categories">
               <h1>Welcome to ArtiKon</h1>
@@ -171,6 +169,8 @@ function Home() {
               </div>
             </div>
           </Box>
+
+          {/* Posts section */}
           {posts.length !== 0 ? (
             <Box sx={{ flexGrow: 1 }}>
               <Grid
@@ -205,6 +205,7 @@ function Home() {
               </Grid>
             </Box>
           ) : (
+            // Fallback for no posts available
             <Box
               sx={{
                 backgroundColor: "#f57eb6",
@@ -221,6 +222,7 @@ function Home() {
             </Box>
           )}
         </Container>
+        {/* Footer component */}
         <Footer />
       </Box>
     </>
@@ -229,6 +231,7 @@ function Home() {
 
 export default Home;
 
+// Static images array for the carousel
 const images = [
   {
     label: "ArtiKon carousel image 1",

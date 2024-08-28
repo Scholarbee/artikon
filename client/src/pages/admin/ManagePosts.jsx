@@ -1,3 +1,4 @@
+// Import React and other necessary dependencies from Material UI, Moment.js, and React
 import {
   Button,
   Card,
@@ -29,79 +30,88 @@ import {
 } from "../../redux/posts/postActions";
 import Loader from "../../components/global/Loader";
 
+// Define the ManagePosts component
 function ManagePosts() {
-  const [page, setPage] = useState(0);
-  const [pageLoading, setPageLoading] = useState(false);
-  const [buttonLoading, setButtonLoading] = useState(false);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [posts, setPosts] = useState([]);
-  const [myOrders, setMyOrders] = useState([]);
+  // State variables to manage pagination, loading, and posts data
+  const [page, setPage] = useState(0); // Current page in the table
+  const [pageLoading, setPageLoading] = useState(false); // Loading state for the page
+  const [buttonLoading, setButtonLoading] = useState(false); // Loading state for buttons
+  const [rowsPerPage, setRowsPerPage] = useState(10); // Rows per page in the table
+  const [posts, setPosts] = useState([]); // Posts data
+  const [myOrders, setMyOrders] = useState([]); // Orders data (unused in this code)
 
+  // Handle page change in the table
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
+  // Handle change in rows per page
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
 
+  // Fetch posts data on component mount
   useEffect(() => {
     getPosts();
-    //   getOrders();
+    // Optionally, getOrders could be called here if needed
+    // getOrders();
   }, []);
 
+  // Function to fetch posts from the server
   const getPosts = async () => {
     setPageLoading(true);
-    const { data } = await adminGetPosts();
+    const { data } = await adminGetPosts(); // Fetch posts data
     console.log(data);
-    setPosts(data.posts);
-    setPageLoading(false);
+    setPosts(data.posts); // Set the posts state with fetched data
+    setPageLoading(false); // Stop loading
   };
 
+  // Function to refresh posts data
   const showPosts = async () => {
     const { data } = await adminGetPosts();
     console.log(data);
     setPosts(data.posts);
   };
 
+  // Function to block a post
   const blockPost = async (id, postTitle, ownerName, ownerEmail) => {
-    setButtonLoading(true);
-    const data = await adminBlockPost(id, { postTitle, ownerName, ownerEmail });
+    setButtonLoading(true); // Start button loading state
+    const data = await adminBlockPost(id, { postTitle, ownerName, ownerEmail }); // Block the post
     if (data.success) {
-      toast.success("Post has been blocked successfully");
+      toast.success("Post has been blocked successfully"); // Show success toast
     }
-    // console.log(data);
+    // Refresh posts data after blocking
     await showPosts();
-    setButtonLoading(false);
+    setButtonLoading(false); // Stop button loading state
   };
+
+  // Function to unblock a post
   const unblockPost = async (id, postTitle, ownerName, ownerEmail) => {
     setButtonLoading(true);
-    const data = await adminUnblockPost(id, {
-      postTitle,
-      ownerName,
-      ownerEmail,
-    });
+    const data = await adminUnblockPost(id, { postTitle, ownerName, ownerEmail }); // Unblock the post
     if (data.success) {
       toast.success("Post has been unblocked successfully");
     }
-    // console.log(data);
+    // Refresh posts data after unblocking
     await showPosts();
     setButtonLoading(false);
   };
+
+  // Function to delete a post (not fully implemented here)
   const deletepost = async (id) => {
     const { data } = await adminDeleteUser(id);
     if (data.success) {
       toast.success("User has been deleted successfully");
     }
-
-    // console.log(data);
+    // Refresh posts data after deletion
     await showPosts();
   };
+
   return (
     <>
       {pageLoading ? (
-        <Loader />
+        <Loader /> // Show loader if page is loading
       ) : (
         <Grid container spacing={2}>
           <Grid item xs={12} md={12}>
@@ -178,8 +188,9 @@ function ManagePosts() {
                                       Unblock
                                     </Button>
                                   )}
+                                  {/* Optionally, delete button can be added here */}
                                   {/* <Button onClick={() => deletepost(post._id)}>
-                                    Unblock
+                                    Delete
                                   </Button> */}
                                 </TableCell>
                               </TableRow>
@@ -189,13 +200,13 @@ function ManagePosts() {
                     </Table>
                   </TableContainer>
                   <TablePagination
-                    rowsPerPageOptions={[5, 10, 15, 20, 25, 30, 50, 100]}
+                    rowsPerPageOptions={[5, 10, 15, 20, 25, 30, 50, 100]} // Rows per page options
                     component="div"
-                    count={posts.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    count={posts.length} // Total number of posts
+                    rowsPerPage={rowsPerPage} // Current rows per page
+                    page={page} // Current page
+                    onPageChange={handleChangePage} // Handle page change
+                    onRowsPerPageChange={handleChangeRowsPerPage} // Handle rows per page change
                   />
                 </Paper>
               </CardContent>

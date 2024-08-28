@@ -13,14 +13,18 @@ import { useSelector } from "react-redux";
 import { selectBrand, selectUser } from "../../redux/auth/authSlice";
 
 function MyProfile() {
+  // Retrieve user information from Redux store
   const userInfo = useSelector(selectUser);
+  // Retrieve brand information from Redux store
   const brandInfo = useSelector(selectBrand);
+
   return (
     <>
       <Grid container spacing={1}>
         <Grid item xs={12} md={6}>
           <Card>
             <CardContent>
+              {/* User Avatar and Name Section */}
               <Box
                 sx={{
                   display: "flex",
@@ -33,7 +37,12 @@ function MyProfile() {
               >
                 <Avatar
                   src={userInfo.photo}
-                  sx={{ m: 1, height:100,width:100, bgcolor: "rgb(85, 0, 70)" }}
+                  sx={{
+                    m: 1,
+                    height: 100,
+                    width: 100,
+                    bgcolor: "rgb(85, 0, 70)",
+                  }}
                 ></Avatar>
                 <Typography
                   sx={{ textAlign: "center", margin: "0 0 25px 0" }}
@@ -44,6 +53,8 @@ function MyProfile() {
                   {userInfo.name}
                 </Typography>
               </Box>
+
+              {/* User Details Section */}
               <Box>
                 <Typography gutterBottom variant="h7" component="div">
                   City: {userInfo.city}
@@ -51,7 +62,6 @@ function MyProfile() {
                 <Typography gutterBottom variant="h7" component="div">
                   Role: {userInfo.role}
                 </Typography>
-
                 <Typography gutterBottom variant="h7" component="div">
                   Phone: {userInfo.phone}
                 </Typography>
@@ -59,6 +69,7 @@ function MyProfile() {
                   Email: {userInfo.email}
                 </Typography>
 
+                {/* Conditional rendering for brand details if the user has a role other than "user" */}
                 {userInfo.role !== "user" && (
                   <Box>
                     <Typography gutterBottom variant="h7" component="div">
@@ -74,14 +85,12 @@ function MyProfile() {
                 )}
               </Box>
 
+              {/* Edit Profile Button */}
               <Stack sx={{ margin: "5px 0 0 0" }}>
                 <Button
                   href=""
                   variant="contained"
-                  // onClick={() => setOpen(true)}
                   sx={{ backgroundColor: "rgb(85, 0, 70)" }}
-                  // onClick={changePassword}
-                  // endIcon={<SendIcon />}
                 >
                   Edit Profile
                 </Button>
