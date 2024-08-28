@@ -1,3 +1,4 @@
+// Importing necessary components and icons from Material-UI
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
@@ -6,12 +7,6 @@ import {
   Button,
   Card,
   CardContent,
-  FilledInput,
-  FormControl,
-  IconButton,
-  Input,
-  InputAdornment,
-  InputLabel,
   Stack,
   TextField,
   Typography,
@@ -19,15 +14,20 @@ import {
 import React from "react";
 
 function ChangePassword() {
+  // State to manage the visibility of the password
   const [showPassword, setShowPassword] = React.useState(false);
 
+  // Function to toggle the visibility of the password
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
+  // Prevent default behavior when the mouse is down on the password input field
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
   return (
     <>
+      {/* Card container to hold the change password form */}
       <Card sx={{ maxWidth: 500, height: 420 }}>
         <CardContent
           sx={{
@@ -38,9 +38,11 @@ function ChangePassword() {
             p: 5,
           }}
         >
+          {/* Avatar with a lock icon, representing password change */}
           <Avatar sx={{ m: 1, bgcolor: "teal" }}>
             <LockOutlinedIcon />
           </Avatar>
+          {/* Title of the card */}
           <Typography
             gutterBottom
             marginBottom={2}
@@ -50,14 +52,17 @@ function ChangePassword() {
           >
             Change Password
           </Typography>
-          <Stack spacing={3} width={100 + "%"}>
+          {/* Stack container for form fields */}
+          <Stack spacing={3} width="100%">
+            {/* Old password input field */}
             <TextField
               id="oldpassword"
-              label=" Old Password"
+              label="Old Password"
               type="password"
               autoComplete="current-password"
               variant="standard"
             />
+            {/* New password input field */}
             <TextField
               id="newpassword"
               label="New Password"
@@ -65,6 +70,7 @@ function ChangePassword() {
               autoComplete="new-password"
               variant="standard"
             />
+            {/* Confirm password input field */}
             <TextField
               id="confirmPassword"
               label="Confirm Password"
@@ -72,10 +78,9 @@ function ChangePassword() {
               autoComplete="confirm-password"
               variant="standard"
             />
-
+            {/* Button to submit the password change */}
             <Button
               variant="contained"
-              // color="success"
               sx={{ backgroundColor: "rgb(85, 0, 70)" }}
             >
               Change Password
@@ -87,4 +92,4 @@ function ChangePassword() {
   );
 }
 
-export default ChangePassword;
+export default ChangePassword; // Exporting the component for use in other parts of the application

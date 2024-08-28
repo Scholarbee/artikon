@@ -1,9 +1,10 @@
-import  { useState } from "react";
+// Import necessary dependencies and components from Material-UI, React, and Redux
+import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControlLabel from "@mui/material/FormControlLabel;
 import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
@@ -21,33 +22,38 @@ import { useDispatch } from "react-redux";
 import { SET_LOGIN, SET_NAME, SET_TOKEN, SET_USER } from "../../redux/auth/authSlice";
 import Loader from "../../components/global/Loader";
 
-// TODO remove, this demo shouldn't need to reset the theme.
+// Initial state for the form data
 const initialState = {
   email: "",
   password: "",
 };
 
+// Create a default Material-UI theme
 const defaultTheme = createTheme();
 
 export default function Login() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  const [formData, setformData] = useState(initialState);
-  const { email, password } = formData;
+  const dispatch = useDispatch(); // Initialize the Redux dispatch function
+  const navigate = useNavigate(); // Hook for navigation
+  const [isLoading, setIsLoading] = useState(false); // State to manage the loading state
+  const [formData, setformData] = useState(initialState); // State to manage form data
+  const { email, password } = formData; // Destructure email and password from formData
 
+  // Handle input change for form fields
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setformData({ ...formData, [name]: value });
   };
 
+  // Function to handle login
   const login = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent the default form submission behavior
 
+    // Validate form fields
     if (!email || !password) {
       return toast.error("All fields are required");
     }
 
+    // Validate email format
     if (!validateEmail(email)) {
       return toast.error("Please enter a valid email");
     }
@@ -56,39 +62,34 @@ export default function Login() {
       email,
       password,
     };
-    setIsLoading(true);
+    setIsLoading(true); // Set loading state to true
     try {
-      const data = await loginUser(userData);
-      // console.log(data);
-      dispatch(SET_LOGIN(true));
-      dispatch(SET_TOKEN(data.token));
-      dispatch(SET_NAME(data.firstName + " " + data.surname));
-      dispatch(SET_USER(data));
-      // console.log(data);
-      navigate("/user/dashboard");
-      setIsLoading(false);
+      const data = await loginUser(userData); // Call the loginUser function to authenticate
+      dispatch(SET_LOGIN(true)); // Dispatch action to set login state in Redux
+      dispatch(SET_TOKEN(data.token)); // Store token in Redux state
+      dispatch(SET_NAME(data.firstName + " " + data.surname)); // Set user name in Redux state
+      dispatch(SET_USER(data)); // Set user data in Redux state
+      navigate("/user/dashboard"); // Navigate to the user dashboard
+      setIsLoading(false); // Set loading state to false
     } catch (error) {
-      setIsLoading(false);
+      setIsLoading(false); // Handle error and set loading state to false
     }
   };
 
   return (
     <>
-      <Navbar />
-      <ThemeProvider theme={defaultTheme}>
-        {isLoading && <Loader />}
+      <Navbar /> {/* Render the Navbar component */}
+      <ThemeProvider theme={defaultTheme}> {/* Apply the theme using ThemeProvider */}
+        {isLoading && <Loader />} {/* Conditionally render the Loader component */}
         <Grid container component="main" sx={{ height: "100vh" }}>
-          <CssBaseline />
+          <CssBaseline /> {/* CssBaseline to normalize styles across browsers */}
           <Grid
             item
             xs={false}
             sm={6}
             md={6}
             sx={{
-              // backgroundImage:
-              //   "url(https://source.unsplash.com/random?wallpapers)",
-              backgroundImage:
-                "/p4.jpg",
+              backgroundImage: "/p4.jpg", // Background image for the left side
               backgroundRepeat: "no-repeat",
               backgroundColor: (t) =>
                 t.palette.mode === "light"
@@ -132,7 +133,7 @@ export default function Login() {
                   name="email"
                   autoComplete="email"
                   autoFocus
-                  onChange={handleInputChange}
+                  onChange={handleInputChange} // Handle input changes
                 />
                 <TextField
                   margin="normal"
@@ -143,7 +144,7 @@ export default function Login() {
                   type="password"
                   id="password"
                   autoComplete="current-password"
-                  onChange={handleInputChange}
+                  onChange={handleInputChange} // Handle input changes
                 />
                 <FormControlLabel
                   control={<Checkbox value="remember" color="primary" />}
@@ -183,7 +184,7 @@ export default function Login() {
           </Grid>
         </Grid>
       </ThemeProvider>
-      <Footer />
+      <Footer /> {/* Render the Footer component */}
     </>
   );
 }
