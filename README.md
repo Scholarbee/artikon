@@ -13,7 +13,12 @@ Artisans, Cry no more, ArtiKon is Here to Help
 
 ## How ArtiKon Works
 - Logon to our Website {https://artikon-client.onrender.com/} 
-- 
+- Sign up to the software Or Login if You already have an account
+- For Artisans only (click on Become An Artisan to be able to post on the platform)
+- For Customers that are not registered, you can only view post, Like and Make comments
+
+## This is a video Demonstration on how it works
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](https://www.youtube.com/watch?v=cQJ403sIYkI)
 
 ## How to Install The Software From Localhost
 1.  Git clone the Repository into you local machine
