@@ -19,7 +19,7 @@ Artisans, Cry no more, ArtiKon is Here to Help
 
 ## This is a video Demonstration on how it works
 
-[![ArtiKon - Bringing the Artisan Closer to You](https://i.ibb.co/d4sn68R/Artikon-Thump.png)](https://www.youtube.com/watch?v=cQJ403sIYkI)
+[![ArtiKon - Bringing the Artisan Closer to You](https://iili.io/dw3vuUl.md.jpg)](https://www.youtube.com/watch?v=cQJ403sIYkI)
 
 
 
