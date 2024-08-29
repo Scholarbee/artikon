@@ -21,11 +21,22 @@ Artisans, Cry no more, ArtiKon is Here to Help
 
 [![ArtiKon - Bringing the Artisan Closer to You](https://iili.io/dw3vuUl.md.jpg)](https://www.youtube.com/watch?v=cQJ403sIYkI)
 
-
-
+## Development platform
+MERN STACK was used as the development platform
+`M = MongoDb`
+`E = Express JavaScript`
+`R = React JavaScript`
+`N = Node JavaScript`
 
 ## How to Install The Software From Localhost
 1.  Git clone the Repository into you local machine
         GITHUB: https://github.com/Scholarbee/artikon.git
 2. Type the Command: `npm install` (This will install all the Dependencies to the Project)
 3. Run the Command `vite dev run` or `vite dev start`
+
+
+
+## Contributors
+- Isaac Appiatu
+- Stephen Wiafe Opoku
+- Maliki Muhammad
