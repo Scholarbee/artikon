@@ -15,14 +15,14 @@ import {
   Typography,
 } from "@mui/material";
 import moment from "moment"; // Library for formatting dates
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify"; // For displaying notifications
 import {
   adminBlockUser,
   adminDeleteUser,
   adminUnblockUser,
   getUsers,
-} from "../../redux/auth/authActions"; // Actions for user management
-import { toast } from "react-toastify"; // For displaying notifications
+} from "../../redux/admin/adminActions";
 
 function ManageUsers() {
   // State variables for pagination and user data
@@ -101,11 +101,9 @@ function ManageUsers() {
                       <TableRow>
                         {/* Table headers */}
                         <TableCell>Name</TableCell>
-                        <TableCell>Gender</TableCell>
                         <TableCell>Email</TableCell>
                         <TableCell>Phone</TableCell>
                         <TableCell>Address</TableCell>
-                        <TableCell>Date Of Birth</TableCell>
                         <TableCell>Status</TableCell>
                         <TableCell>Actions</TableCell>
                       </TableRow>
@@ -121,13 +119,10 @@ function ManageUsers() {
                           return (
                             <TableRow key={i}>
                               <TableCell>{user.name}</TableCell>
-                              <TableCell>{user.gender}</TableCell>
                               <TableCell>{user.email}</TableCell>
                               <TableCell>{user.phone}</TableCell>
                               <TableCell>{user.city}</TableCell>
-                              <TableCell>
-                                {moment(user.dob).format("MMMM DD, YYYY")}
-                              </TableCell>
+                             
                               <TableCell>
                                 {user.isActive ? "Active" : "Blocked"}
                               </TableCell>

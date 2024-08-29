@@ -11,10 +11,7 @@ export const validateEmail = (email) => {
 
 // Register User
 export const registerUser = async (userData) => {
-  const response = axios.post(
-    `${BACKEND_URL}/api/users/register`,
-    userData
-  );
+  const response = axios.post(`${BACKEND_URL}/api/users/register`, userData);
 
   return response;
 };
@@ -107,6 +104,7 @@ export const getLoginStatus = async () => {
     toast.error(message);
   }
 };
+
 // Get User Profile
 export const getUser = async () => {
   try {
@@ -121,19 +119,6 @@ export const getUser = async () => {
   }
 };
 
-// Get all users
-export const getUsers = async () => {
-  try {
-    const response = await axios.get(`${BACKEND_URL}/api/users`);
-    return response.data;
-  } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    toast.error(message);
-  }
-};
 // Update Profile
 export const updateUser = async (formData) => {
   try {
@@ -150,59 +135,13 @@ export const updateUser = async (formData) => {
     toast.error(message);
   }
 };
+
 // Update Profile
 export const changePassword = async (formData) => {
   try {
     const response = await axios.patch(
       `${BACKEND_URL}/api/users/changepassword`,
       formData
-    );
-    return response.data;
-  } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    toast.error(message);
-  }
-};
-
-// Block user
-export const adminBlockUser = async (id) => {
-  try {
-    const response = await axios.put(
-      `${BACKEND_URL}/api/users/block-user/${id}`
-    );
-    return response.data;
-  } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    toast.error(message);
-  }
-};
-// Unblock user
-export const adminUnblockUser = async (id) => {
-  try {
-    const response = await axios.put(
-      `${BACKEND_URL}/api/users/unblock-user/${id}`
-    );
-    return response.data;
-  } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    toast.error(message);
-  }
-};
-
-// Delete user
-export const adminDeleteUser = async (id) => {
-  try {
-    const response = await axios.delete(
-      `${BACKEND_URL}/api/users/delete-user/${id}`
     );
     return response.data;
   } catch (error) {

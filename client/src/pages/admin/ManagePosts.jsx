@@ -15,13 +15,8 @@ import {
   Typography,
 } from "@mui/material";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
-import {
-  adminBlockUser,
-  adminDeleteUser,
-  adminUnblockUser,
-  getUsers,
-} from "../../redux/auth/authActions";
+import { useEffect, useState } from "react";
+
 import { toast } from "react-toastify";
 import {
   adminBlockPost,
@@ -38,7 +33,7 @@ function ManagePosts() {
   const [buttonLoading, setButtonLoading] = useState(false); // Loading state for buttons
   const [rowsPerPage, setRowsPerPage] = useState(10); // Rows per page in the table
   const [posts, setPosts] = useState([]); // Posts data
-  const [myOrders, setMyOrders] = useState([]); // Orders data (unused in this code)
+  // const [myOrders, setMyOrders] = useState([]); // Orders data (unused in this code)
 
   // Handle page change in the table
   const handleChangePage = (event, newPage) => {
@@ -89,7 +84,11 @@ function ManagePosts() {
   // Function to unblock a post
   const unblockPost = async (id, postTitle, ownerName, ownerEmail) => {
     setButtonLoading(true);
-    const data = await adminUnblockPost(id, { postTitle, ownerName, ownerEmail }); // Unblock the post
+    const data = await adminUnblockPost(id, {
+      postTitle,
+      ownerName,
+      ownerEmail,
+    }); // Unblock the post
     if (data.success) {
       toast.success("Post has been unblocked successfully");
     }
@@ -100,10 +99,6 @@ function ManagePosts() {
 
   // Function to delete a post (not fully implemented here)
   const deletepost = async (id) => {
-    const { data } = await adminDeleteUser(id);
-    if (data.success) {
-      toast.success("User has been deleted successfully");
-    }
     // Refresh posts data after deletion
     await showPosts();
   };
