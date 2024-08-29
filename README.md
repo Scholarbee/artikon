@@ -18,7 +18,8 @@ Artisans, Cry no more, ArtiKon is Here to Help
 - For Customers that are not registered, you can only view post, Like and Make comments
 
 ## This is a video Demonstration on how it works
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](https://www.youtube.com/watch?v=cQJ403sIYkI)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/cQJ403sIYkI" frameborder="0" allowfullscreen></iframe>
+
 
 ## How to Install The Software From Localhost
 1.  Git clone the Repository into you local machine
