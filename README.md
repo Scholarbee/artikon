@@ -18,7 +18,9 @@ Artisans, Cry no more, ArtiKon is Here to Help
 - For Customers that are not registered, you can only view post, Like and Make comments
 
 ## This is a video Demonstration on how it works
-<iframe width="560" height="315" src="https://www.youtube.com/embed/cQJ403sIYkI" frameborder="0" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/cQJ403sIYkI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 
 
 ## How to Install The Software From Localhost
