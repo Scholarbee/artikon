@@ -11,30 +11,19 @@ export const validateEmail = (email) => {
 
 // Register User
 export const registerUser = async (userData) => {
-  try {
-    const response = await axios.post(
-      `${BACKEND_URL}/api/users/add-user`,
-      userData,
-      { withCredentials: true }
-    );
-    if (response) {
-      toast.success("User Registered successfully");
-    }
-    return response.data;
-  } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    toast.error(message);
-  }
+  const response = axios.post(
+    `${BACKEND_URL}/api/users/register`,
+    userData
+  );
+
+  return response;
 };
 
 /**
  * Login User
- * @param {*} userData 
- * @returns 
- * 
+ * @param {*} userData
+ * @returns
+ *
  */
 export const loginUser = async (userData) => {
   try {
@@ -226,9 +215,9 @@ export const adminDeleteUser = async (id) => {
 };
 
 /**
- * 
- * @param {*} formData 
- * @returns 
+ *
+ * @param {*} formData
+ * @returns
  */
 export const registerAgent = async (formData) => {
   try {

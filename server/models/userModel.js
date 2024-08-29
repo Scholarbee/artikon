@@ -18,7 +18,6 @@ const userSchema = mongoose.Schema(
     brand: {
       brandName: {
         type: String,
-        unique: true,
       },
       brandLocation: {
         type: String,

@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const Token = require("../models/tokenModel");
 const User = require("../models/userModel");
+const cloudinary = require("../utils/cloudinary");
 
 /**
  * This function generate and return a token that expires in 24hrs for authentication
@@ -337,7 +338,6 @@ exports.resetPassword = asyncHandler(async (req, res) => {
     message: "Password Reset Successful, Please Login",
   });
 });
-
 
 /**
  * Register as an agent
